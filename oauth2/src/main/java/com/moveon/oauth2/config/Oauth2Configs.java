@@ -7,6 +7,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.oauth2.config.annotation.configurers.ClientDetailsServiceConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.AuthorizationServerConfigurerAdapter;
@@ -29,7 +30,7 @@ import javax.sql.DataSource;
  * @Version 1.0
  **/
 @Configuration
-//@EnableAuthorizationServer
+@EnableAuthorizationServer
 public class Oauth2Configs extends AuthorizationServerConfigurerAdapter {
 
     @Autowired
@@ -39,17 +40,13 @@ public class Oauth2Configs extends AuthorizationServerConfigurerAdapter {
     private UserService userService;
 
     @Autowired
-    private AuthenticationConfiguration authenticationConfiguration;
+    private AuthenticationManager authenticationManager;
 
     @Bean
     public TokenStore tokenStore() {
         return new JdbcTokenStore(dataSource);
     }
 
-    @Bean
-    public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
-        return authenticationConfiguration.getAuthenticationManager();
-    }
 
     @Bean
     @Primary
@@ -81,7 +78,7 @@ public class Oauth2Configs extends AuthorizationServerConfigurerAdapter {
     public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
         endpoints.userDetailsService(userService);
         endpoints.tokenServices(defaultTokenServices());
-        endpoints.authenticationManager(authenticationManager(authenticationConfiguration));
+        endpoints.authenticationManager(authenticationManager);
     }
 
 }

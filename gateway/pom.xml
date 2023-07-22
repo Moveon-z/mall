@@ -55,28 +55,40 @@
             好处：框架级别的权限控制逻辑
             缺点：会加重gateway的工作量，出了问题不好debug，要集成mysql
         -->
+<!--        <dependency>-->
+<!--            <groupId>org.springframework.cloud</groupId>-->
+<!--            <artifactId>spring-cloud-starter-oauth2</artifactId>-->
+<!--            <version>2.2.5.RELEASE</version>-->
+<!--        </dependency>-->
+<!--        <dependency>-->
+<!--            <groupId>org.springframework.boot</groupId>-->
+<!--            <artifactId>spring-boot-starter-security</artifactId>-->
+<!--        </dependency>-->
+<!--        <dependency>-->
+<!--            <groupId>org.springframework.security</groupId>-->
+<!--            <artifactId>spring-security-oauth2-resource-server</artifactId>-->
+<!--        </dependency>-->
+<!--        <dependency>-->
+<!--            <groupId>mysql</groupId>-->
+<!--            <artifactId>mysql-connector-java</artifactId>-->
+<!--        </dependency>-->
+<!--        <dependency>-->
+<!--            <groupId>org.springframework.boot</groupId>-->
+<!--            <artifactId>spring-boot-starter-jdbc</artifactId>-->
+<!--        </dependency>-->
+        <!-- 第一种集成方式-->
+
+        <!-- 第二种集成方式：openfeign + filter
+            好处：简单，不用db；
+            坏处：openfeign和gateway集成上有问题。（gateway响应式编程）
+                rest比响应式要慢点，rest需要有io blocking
+            大部分企业，对gateway更倾向于openfeign + filter方式：token存储到redis
+            filter中拿到token，然后直接调用oauth2 service的checktoken方法，可以用就行
+        -->
         <dependency>
             <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-oauth2</artifactId>
-            <version>2.2.5.RELEASE</version>
+            <artifactId>spring-cloud-starter-openfeign</artifactId>
         </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-security</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.security</groupId>
-            <artifactId>spring-security-oauth2-resource-server</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>mysql</groupId>
-            <artifactId>mysql-connector-java</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-jdbc</artifactId>
-        </dependency>
-        <!-- 第一种集成方式-->
 	</dependencies>
 
 	<build>
