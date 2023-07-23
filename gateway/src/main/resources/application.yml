@@ -31,8 +31,8 @@ spring:
             - Path=/**
           filters:
             - StripPrefix=1
-  datasource:
-    driver-class-name: com.mysql.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/oauth?serverTimezone=UTC&useSSL=false
-    username: root
-    password: root
+#  datasource:
+#    driver-class-name: com.mysql.jdbc.Driver
+#    url: jdbc:mysql://localhost:3306/oauth?serverTimezone=UTC&useSSL=false
+#    username: root
+#    password: root
