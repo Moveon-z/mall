@@ -2,6 +2,7 @@ package com.moveon.gateway.feign;
 
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.Map;
 import java.util.Objects;
@@ -17,5 +18,5 @@ import java.util.Objects;
 public interface Oauth2FeignClient {
 
     @RequestMapping("/oauth/check_token")
-    Map<String, Objects> checkToken(String token);
+    Map<String, Objects> checkToken(@RequestParam("token") String token);
 }

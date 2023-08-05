@@ -13,8 +13,17 @@ spring:
       config:
         server-addr: 192.168.0.107:8837, 192.168.0.107:8848, 192.168.0.107:8859
         file-extension: yaml
-
     gateway:
       discovery:
         locator:
           enabled: true
+  redis:
+    host: localhost
+    port: 6319
+    timeout: 10s
+    lettuce:
+      pool:
+        max-active: 50
+        max-idle: 50
+        max-wait: -1ms
+        min-idle: 0

@@ -1,6 +1,7 @@
 package com.moveon.gateway.filter;
 
 import com.moveon.gateway.feign.Oauth2FeignClient;
+import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
 import org.springframework.cloud.gateway.filter.GlobalFilter;
@@ -16,6 +17,7 @@ import reactor.core.publisher.Mono;
 import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
 
 /**
  * @ClassName Oauth2Filter
@@ -31,6 +33,7 @@ public class Oauth2Filter implements GlobalFilter, Ordered {
     @Autowired
     @Lazy
     private Oauth2FeignClient oauth2FeignClient;
+    @SneakyThrows
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
         ServerHttpRequest request = exchange.getRequest();
@@ -43,7 +46,11 @@ public class Oauth2Filter implements GlobalFilter, Ordered {
 
         // path校验通过后 看token
         String token = request.getHeaders().getFirst("Authorization");
-        Map<String, Objects> tokenResult = oauth2FeignClient.checkToken(token);
+//        Map<String, Objects> tokenResult = oauth2FeignClient.checkToken(token);
+        CompletableFuture<Map> future = CompletableFuture.supplyAsync(() -> {
+            return oauth2FeignClient.checkToken(token);
+        });
+        Map<String, Objects> tokenResult = future.get();
         if (!Boolean.valueOf(String.valueOf(tokenResult.get("active")))) {
             // 错误的处理
             response.setStatusCode(HttpStatus.UNAUTHORIZED);
